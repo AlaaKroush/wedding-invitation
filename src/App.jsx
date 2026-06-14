@@ -3,6 +3,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Lenis from 'lenis';
 import { MapPin, ArrowRight } from 'lucide-react';
 
+// ================= 1. عمل الـ Import للصور في الأول هنا =================
+// تأكدي أن أسامي الملفات وامتداداتها (jpeg, jpg) مطابقة بالظبط للحقيقة وحساسة للحروف
+import imgHeroLeft from "../photo/3.jpeg";
+import imgHeroRight from "../photo/6.jpeg";
+import imgMemoryLarge from "../photo/photo1.jpeg";
+import imgMemoryTopRight from "../photo/5.jpeg";
+import imgMemoryBottomRight from "../photo/8.jpeg";
+import imgSaveTheDateCircle from "../photo/7.jpeg";
+import imgVenueBg from "../photo/date.jpg";
+
+
 function Countdown() {
   const [timeLeft, setTimeLeft] = useState({
     days: 0, hours: 0, minutes: 0, seconds: 0
@@ -40,33 +51,27 @@ function Countdown() {
 }
 
 export default function App() {
-  // حالات الويبسايت المتتالية: 'envelope' -> 'invited' -> 'website'
   const [flowState, setFlowState] = useState('envelope');
-  const [envelopeAnimation, setEnvelopeAnimation] = useState('closed'); // 'closed' | 'opening'
+  const [envelopeAnimation, setEnvelopeAnimation] = useState('closed'); 
   const lenisRef = useRef(null);
 
   const handleEnvelopeClick = () => {
     if (envelopeAnimation !== 'closed') return;
-
     setEnvelopeAnimation('opening');
-
-    // بعد ثانية واحدة (انتهاء أنيميشن الظرف) ندخل على شاشة You are invited
     setTimeout(() => {
       setFlowState('invited');
     }, 1000);
   };
 
   useEffect(() => {
-    // بمجرد الدخول في شاشة You are invited، نثبتها لمدة ثانيتين فقط ثم ننتقل للموقع تلقائياً
     if (flowState === 'invited') {
       const timer = setTimeout(() => {
         setFlowState('website');
-      }, 2000); // تم التعديل إلى 2000ms (ثانيتين بالظبط)
+      }, 2000); 
       return () => clearTimeout(timer);
     }
   }, [flowState]);
 
-  // تفعيل الـ Smooth Scroll فقط عند الوصول للويبسايت الرئيسي
   useEffect(() => {
     if (flowState === 'website') {
       const lenis = new Lenis({
@@ -109,7 +114,6 @@ export default function App() {
               transition: { duration: 0.8, ease: 'easeInOut' }
             }}
           >
-            {/* Cinematic background glow */}
             <div className="absolute w-[80vw] h-[80vw] max-w-[600px] max-h-[600px] bg-[#C5A880]/15 rounded-full blur-[100px] pointer-events-none" />
 
             <div
@@ -117,18 +121,14 @@ export default function App() {
               onClick={handleEnvelopeClick}
               style={{ perspective: '1200px' }}
             >
-              {/* --- ENVELOPE INSIDE BACK --- */}
               <div className="absolute inset-0 bg-[#C8C1B4] shadow-[inset_0_0_40px_rgba(0,0,0,0.1)] border border-[#B3A999] z-0" />
 
-              {/* --- THE INVITATION CARD --- */}
               <motion.div
                 className="absolute bottom-2 left-3 right-3 h-[430px] bg-[#FAF8F5] shadow-xl flex flex-col justify-between p-2 z-10 border border-[#E8E1D5]"
                 animate={envelopeAnimation === 'opening' ? { y: -380, scale: 0.98, zIndex: 35 } : { y: 0, scale: 1, zIndex: 10 }}
                 transition={{ duration: 1, delay: 0.3, ease: [0.25, 1, 0.5, 1] }}
               >
-                {/* Card Gold Foil Border */}
                 <div className="w-full h-full border-[1px] border-[#C5A880]/40 flex flex-col items-center justify-center relative p-6 bg-[url('/noise.png')] bg-repeat">
-                  {/* Corner Ornaments */}
                   <div className="absolute top-3 left-3 w-4 h-4 border-t border-l border-[#C5A880]" />
                   <div className="absolute top-3 right-3 w-4 h-4 border-t border-r border-[#C5A880]" />
                   <div className="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-[#C5A880]" />
@@ -142,30 +142,23 @@ export default function App() {
                 </div>
               </motion.div>
 
-              {/* --- ENVELOPE FRONT FLAPS --- */}
-
-              {/* Left Flap */}
               <div
                 className="absolute inset-0 bg-[#EAE4D9] z-20 drop-shadow-[4px_0_12px_rgba(0,0,0,0.08)]"
                 style={{ clipPath: 'polygon(0 0, 52% 50%, 0 100%)' }}
               />
 
-              {/* Right Flap */}
               <div
                 className="absolute inset-0 bg-[#E3DCCF] z-20 drop-shadow-[-4px_0_12px_rgba(0,0,0,0.08)]"
                 style={{ clipPath: 'polygon(100% 0, 48% 50%, 100% 100%)' }}
               />
 
-              {/* Bottom Flap */}
               <div
                 className="absolute inset-0 bg-[#EFEBE1] z-30 drop-shadow-[0_-4px_16px_rgba(0,0,0,0.1)]"
                 style={{ clipPath: 'polygon(0 100%, 50% 48%, 100% 100%)' }}
               >
-                {/* Subtle texture/line on bottom flap */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-1/3 h-[1px] bg-white/40" />
               </div>
 
-              {/* --- ENVELOPE TOP FLAP --- */}
               <motion.div
                 className="absolute inset-0 bg-[#F5F0E6] z-40 origin-top drop-shadow-[0_6px_16px_rgba(0,0,0,0.15)]"
                 style={{ clipPath: 'polygon(0 0, 100% 0, 50% 53%)' }}
@@ -173,31 +166,25 @@ export default function App() {
                 animate={envelopeAnimation === 'opening' ? { rotateX: 180, opacity: 0 } : { rotateX: 0, opacity: 1 }}
                 transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
               >
-                {/* Inner subtle gold line on the flap edge */}
                 <div
                   className="absolute inset-0 border-b-2 border-[#C5A880]/10"
                   style={{ clipPath: 'polygon(0 0, 100% 0, 50% 53%)' }}
                 />
               </motion.div>
 
-              {/* --- ROYAL WAX SEAL --- */}
               <motion.div
                 className="absolute left-1/2 top-[53%] -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none"
                 animate={envelopeAnimation === 'opening' ? { scale: 0, opacity: 0, y: -20 } : { scale: 1, opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, ease: 'backIn' }}
               >
-                {/* Outer dark ring for shadow and depth */}
                 <div className="w-16 h-16 bg-gradient-to-br from-[#E6D0A7] to-[#997942] rounded-full flex items-center justify-center shadow-[0_8px_20px_rgba(153,121,66,0.6),inset_0_2px_4px_rgba(255,255,255,0.4)] relative">
-                  {/* Inner ring */}
                   <div className="w-13 h-13 bg-gradient-to-br from-[#B5945B] to-[#D1B88B] rounded-full flex items-center justify-center border border-[#997942]/50 shadow-[inset_0_3px_5px_rgba(0,0,0,0.2)]">
                     <span className="font-serif italic text-white text-xl drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]">E&A</span>
                   </div>
-                  {/* Decorative small light glint in the wax */}
                   <div className="absolute top-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-white/40 rounded-full blur-[1px]" />
                 </div>
               </motion.div>
 
-              {/* --- HELPER TEXT --- */}
               <p className="absolute -bottom-14 left-1/2 -translate-x-1/2 text-[9px] tracking-[0.4em] uppercase text-[#C5A880] whitespace-nowrap animate-pulse">
                 {envelopeAnimation === 'opening' ? "Opening..." : "Click to break seal"}
               </p>
@@ -205,7 +192,7 @@ export default function App() {
           </motion.div>
         )}
 
-        {/* ================= PHASE 2: YOU ARE INVITED (Appears for 2 Seconds) ================= */}
+        {/* ================= PHASE 2: YOU ARE INVITED ================= */}
         {flowState === 'invited' && (
           <motion.div
             key="invited-phase"
@@ -221,7 +208,6 @@ export default function App() {
             <div className="absolute inset-6 border border-[#C5A880]/20 rounded-[24px] pointer-events-none" />
 
             <div className="text-center z-10 flex flex-col items-center max-w-xs">
-              {/* زهرة الـ Line Art العلوية الرقيقة */}
               <div className="w-12 h-20 mb-8 text-[#1C1A17]/80">
                 <svg viewBox="0 0 24 48" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round">
                   <path d="M12,48 L12,8" />
@@ -236,7 +222,6 @@ export default function App() {
                 You are invited!
               </h2>
 
-              {/* زهرة الـ Line Art السفلية المكملة للشكل */}
               <div className="w-12 h-20 mt-4 text-[#1C1A17]/80 transform rotate-180">
                 <svg viewBox="0 0 24 48" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round">
                   <path d="M12,48 L12,12" />
@@ -257,7 +242,6 @@ export default function App() {
           transition={{ duration: 0.8, ease: smoothEasing }}
           className="w-full max-w-4xl mx-auto flex flex-col gap-6 sm:gap-10 pt-20 pb-6 relative"
         >
-          {/* Floating Elegant Nav */}
           <nav className="fixed top-0 left-0 w-full bg-[#FAF6F0]/80 backdrop-blur-md z-40 py-4 px-6 md:px-12 flex justify-between items-center border-b border-[#1C1A17]/[0.05]">
             <span className="font-serif tracking-widest text-sm font-medium text-[#1C1A17]">E & A</span>
             <span className="text-[10px] tracking-[0.25em] uppercase text-[#A39A90] font-sans">16 . 07 . 2026</span>
@@ -301,11 +285,13 @@ export default function App() {
 
             <div className="w-full h-[32vh] relative mt-auto flex justify-center items-end z-10 pb-2">
               <div className="relative w-full h-full max-w-md mx-auto">
+                {/* --- تعديل الصورة اليسرى للـ Variable --- */}
                 <div className="absolute left-2 bottom-0 w-[44%] h-[90%] rounded-[20px] overflow-hidden shadow-md transform -rotate-2 border-2 border-white">
-                  <img src="/photo/3.jpeg" className="w-full h-full object-cover" alt="Eslam and Aya" />
+                  <img src={imgHeroLeft} className="w-full h-full object-cover" alt="Eslam and Aya" />
                 </div>
+                {/* --- تعديل الصورة اليمنى للـ Variable --- */}
                 <div className="absolute right-2 bottom-0 w-[50%] h-[100%] rounded-[24px] overflow-hidden shadow-md transform rotate-2 border-2 border-white">
-                  <img src="/photo/6.jpeg" className="w-full h-full object-cover object-top" alt="Eslam and Aya" />
+                  <img src={imgHeroRight} className="w-full h-full object-cover object-top" alt="Eslam and Aya" />
                 </div>
               </div>
             </div>
@@ -325,18 +311,20 @@ export default function App() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-12 gap-4 w-full max-w-5xl z-10">
-              {/* Large Photo (Photo 2 - Rings) */}
+              {/* --- تعديل الصورة الكبيرة --- */}
               <div className="col-span-1 md:col-span-7 h-[50vh] md:h-[70vh] rounded-[24px] overflow-hidden shadow-sm border border-[#1C1A17]/5 relative group">
-                <img src="/photo/photo1.jpeg" alt="Eslam & Aya Rings" className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
+                <img src={imgMemoryLarge} alt="Eslam & Aya Rings" className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
               </div>
 
               {/* Two Stacked Photos */}
               <div className="col-span-1 md:col-span-5 grid grid-rows-2 gap-4 h-[60vh] md:h-[70vh]">
+                {/* --- تعديل صورة الـ Bouquet --- */}
                 <div className="w-full h-full rounded-[24px] overflow-hidden shadow-sm border border-[#1C1A17]/5 relative group">
-                  <img src="/photo/5.jpeg" alt="Eslam & Aya Bouquet" className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
+                  <img src={imgMemoryTopRight} alt="Eslam & Aya Bouquet" className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
                 </div>
+                {/* --- تعديل صورة الـ Couch --- */}
                 <div className="w-full h-full rounded-[24px] overflow-hidden shadow-sm border border-[#1C1A17]/5 relative group">
-                  <img src="/photo/8.jpeg" alt="Eslam & Aya Couch" className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
+                  <img src={imgMemoryBottomRight} alt="Eslam & Aya Couch" className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
                 </div>
               </div>
             </div>
@@ -349,7 +337,8 @@ export default function App() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: smoothEasing }}
             className="w-full min-h-[70vh] rounded-[32px] border border-[#1C1A17]/10 shadow-sm relative overflow-hidden flex flex-col justify-end p-8 sm:p-12 bg-cover bg-center text-white"
-            style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('/photo/date.jpg')` }}
+            // --- تعديل مسار الـ Background Image ليكون متغير ---
+            style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url(${imgVenueBg})` }}
           >
             <div className="absolute top-8 left-8 sm:left-12 sm:top-12 z-10">
               <p className="font-serif text-2xl sm:text-4xl italic font-light tracking-wide max-w-lg leading-snug">
@@ -400,9 +389,9 @@ export default function App() {
                 SAVE <span className="font-sans font-light text-xl italic block mt-1 text-[#5C544C]">the</span> DATE!
               </h2>
 
-              {/* Added a circular photo part for Save the Date */}
+              {/* --- تعديل الدائرة الـ Save the date --- */}
               <div className="w-56 h-56 sm:w-64 sm:h-64 mx-auto my-6 rounded-full overflow-hidden border-[6px] border-[#FAF6F0] shadow-[0_0_0_2px_rgba(197,168,128,0.3)]">
-                <img src="/photo/7.jpeg" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" alt="Save the date" />
+                <img src={imgSaveTheDateCircle} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" alt="Save the date" />
               </div>
 
               <div className="w-full h-[1px] bg-[#1C1A17]/10 my-4" />
