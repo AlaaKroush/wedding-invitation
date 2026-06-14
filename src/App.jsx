@@ -52,7 +52,7 @@ function Countdown() {
 
 export default function App() {
   const [flowState, setFlowState] = useState('envelope');
-  const [envelopeAnimation, setEnvelopeAnimation] = useState('closed'); 
+  const [envelopeAnimation, setEnvelopeAnimation] = useState('closed');
   const lenisRef = useRef(null);
 
   const handleEnvelopeClick = () => {
@@ -67,7 +67,7 @@ export default function App() {
     if (flowState === 'invited') {
       const timer = setTimeout(() => {
         setFlowState('website');
-      }, 2000); 
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [flowState]);
